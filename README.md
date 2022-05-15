@@ -1,2 +1,2 @@
 # Bankist
-Js Course, Application
+Application along with JS Course.
