@@ -181,12 +181,36 @@ const updateUI = function(acc) {
 
 
   calcDisplaySummary(acc);
+};
+
+const startLogOutTimer = function() {
+  const tick = function() {
+    const min = String(Math.trunc(time / 60)).padStart(2, '0');
+    const sec = String(time % 60).padStart(2, '0');
+
+    labelTimer.textContent = `${min}:${sec}`;
+
+    
+    if(time === 0){
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = '0';
+    }
+    
+    time--;
+  };
+
+
+  let time = 50;
+
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
 }
 
 
-
 // Event handlers
-let currentAccount;
+let currentAccount, timer;
 
 
 // FAKE ALWAYS LOGGED IN
@@ -226,6 +250,9 @@ btnLogin.addEventListener('click', function(e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    if(timer) clearInterval(timer);
+    timer = startLogOutTimer();
+
     // Update UI
     updateUI(currentAccount);
   }
@@ -252,6 +279,10 @@ btnTransfer.addEventListener('click', function(e) {
     receiverAcc.movementsDates.push(new Date().toISOString());
 
     updateUI(currentAccount);
+
+    // Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 })
 
@@ -263,14 +294,20 @@ btnLoan.addEventListener('click', function(e) {
 
   if(amount > 0 && currentAccount.movements.some(mov => mov > amount * 0.1)){
 
-    setTimeout(function() {// Add movement
+    setTimeout(function() {
+    // Add movement
     currentAccount.movements.push(amount);
 
     // Add loan date
     currentAccount.movementsDates.push(new Date().toISOString());
 
     // Update UI
-    updateUI(currentAccount)}, 2500);
+    updateUI(currentAccount)
+
+    // Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
+    }, 2500);
   }
 
   inputLoanAmount.value = '';
@@ -303,3 +340,41 @@ btnSort.addEventListener('click', function(e) {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 })
+
+
+// 
+// 
+// 
+// setInterval(function () {
+//   const now = new Date();
+//   // let day = now.getDate();
+//   let hour = now.getHours();
+//   let min = now.getMinutes();
+//   let sec = now.getSeconds();
+//   console.log(`${hour}:${min}:${sec}`);
+// }, 1000)
+
+
+var isValid = function(s) {
+  var arr = ['(', ')', '[', ']', '{', '}'];
+  var uni = ['(', '[', '{'];
+  var close = [')', ']', '}']
+  
+  var isValid = false;
+  for(var i=0; i<s.length; i++) {
+
+    if(uni.includes(s[i])) {
+      for(var j=i+1; j<s.length; j++){
+        if(close.includes(s[j])) {
+          isValid = true;
+        }
+      }
+    }
+
+  }
+  return isValid;
+};
+
+console.log(isValid("()"));
+console.log(isValid("()[]{}"));
+console.log(isValid("(]"));
