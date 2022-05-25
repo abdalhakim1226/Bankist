@@ -201,7 +201,7 @@ const startLogOutTimer = function() {
   };
 
 
-  let time = 50;
+  let time = 540;
 
   tick();
   const timer = setInterval(tick, 1000);
@@ -340,41 +340,3 @@ btnSort.addEventListener('click', function(e) {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 })
-
-
-// 
-// 
-// 
-// setInterval(function () {
-//   const now = new Date();
-//   // let day = now.getDate();
-//   let hour = now.getHours();
-//   let min = now.getMinutes();
-//   let sec = now.getSeconds();
-//   console.log(`${hour}:${min}:${sec}`);
-// }, 1000)
-
-
-var isValid = function(s) {
-  var arr = ['(', ')', '[', ']', '{', '}'];
-  var uni = ['(', '[', '{'];
-  var close = [')', ']', '}']
-  
-  var isValid = false;
-  for(var i=0; i<s.length; i++) {
-
-    if(uni.includes(s[i])) {
-      for(var j=i+1; j<s.length; j++){
-        if(close.includes(s[j])) {
-          isValid = true;
-        }
-      }
-    }
-
-  }
-  return isValid;
-};
-
-console.log(isValid("()"));
-console.log(isValid("()[]{}"));
-console.log(isValid("(]"));
