@@ -1,6 +1,6 @@
 # Bankist
 
-Application along with JS Course.
+https://abdalhakim1226.github.io/Bankist/
 
 # Usage:
 
